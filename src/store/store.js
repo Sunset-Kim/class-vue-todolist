@@ -31,6 +31,16 @@ export const store = new Vuex.Store({
         day: getDate().day,
       }
     },
+    getters: {
+      totalTaskLength(state) {
+        return state.task.length;
+      },
+      remainTaskLength(state) {
+        return state.task.filter(element => {
+          return element.completed === false;
+        }).length
+      }
+    },
     mutations: {
       addNewTask(state, inputValue) {
         localStorage.setItem(inputValue,inputValue)

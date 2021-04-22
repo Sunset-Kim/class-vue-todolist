@@ -1,7 +1,7 @@
 <template>
     <div id="task-group">
         <h2>You've got</h2>
-        <span>7 task</span>
+        <span>{{this.$store.getters.totalTaskLength}} task {{this.$store.getters.remainTaskLength}} remain</span>
     </div>
 </template>
 
