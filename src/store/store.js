@@ -12,12 +12,10 @@ const storage = {
     let arr = [];
     for(let i = 0; i < localStorage.length; i++) {
       if(localStorage.key(i) !== 'loglevel:webpack-dev-server') {
-        arr.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
+        arr.push(JSON.parse(localStorage.getItem(localStorage.key(i)))); 
       }
     }
-    arr.sort((a,b)=> {
-      return a.time - b.time;
-    })
+    arr.sort((a,b) => a.time - b.time);
     return arr;
   }
 }
@@ -42,23 +40,25 @@ export const store = new Vuex.Store({
       }
     },
     mutations: {
+
       addNewTask(state, inputValue) {
-        localStorage.setItem(inputValue,inputValue)
-        console.log(getDate())
-        let obj = {
-          name: inputValue,
-          time: getDate().time,
-          dateFomat: `${getDate().month}/${getDate().date} ${getDate().hour}:${getDate().min}`,
-          completed: false
+        if(!localStorage.getItem(inputValue)) {
+          let obj = {
+            name: inputValue,
+            time: getDate().time,
+            dateFomat: `${getDate().month}/${getDate().date} ${getDate().hour}:${getDate().min}`,
+            completed: false
+          }
+          state.task.push(obj);
+          localStorage.setItem(obj.name,JSON.stringify(obj));
         }
-        state.task.push(obj);
-        localStorage.setItem(obj.name,JSON.stringify(obj));
       },
 
       removeTask(state,payload) {
-        state.task.splice(payload.index,1);
         localStorage.removeItem(payload.item.name);
+        state.task.splice(payload.index,1);
       },
+
       toggleComplete(state, payload){
         state.task[payload.index].completed = !state.task[payload.index].completed;
         localStorage.setItem(state.task[payload.index].name, JSON.stringify(state.task[payload.index]));
@@ -67,12 +67,12 @@ export const store = new Vuex.Store({
         if(payload === 'dec-date') {
           console.log('내림차순');
           state.task.sort((a,b)=> {
-            return a.time - b.time;
+            return b.time - a.time;
           })
         } else if (payload === 'asc-date') {
           console.log('오름차순');
           state.task.sort((a,b)=> {
-            return b.time - a.time;
+            return a.time - b.time;
           })
         }
       },

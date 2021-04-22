@@ -1,10 +1,11 @@
 <template>
   <div>
-      <ul class="task-list">
+      <transition-group tag="ul" name="list">
+      <!-- <ul class="task-list"> -->
           <li
            class="task-item"
            v-for="(item,index) in this.$store.state.task"
-           :key="index"
+           :key="item.name"
            v-bind:class="{completed:item.completed}"
            >
               <span v-on:click="toggleComplete(item,index)" class="btn-completed"></span>
@@ -16,7 +17,8 @@
                   <span class="task-date">{{item.dateFomat}}</span>
               </div>
           </li>
-      </ul>
+      <!-- </ul> -->
+      </transition-group>
   </div>
 </template>
 
@@ -82,5 +84,14 @@ export default {
 }
 .task-item .btn-delete:hover {
     color: red;
+}
+
+/* transition */
+.list-enter-active, .list-leave-active {
+  transition: all 1s;
+}
+.list-enter, .list-leave-to  {
+  opacity: 0;
+  transform: translateY(30px);
 }
 </style>
